@@ -16,12 +16,12 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#48344F',   /* 價目表深紫紅色 (取代原本的深藍色) */
-                        primaryDark: '#3C2A42', /* 表格標題深紫 */
-                        primaryLight: '#5A4B62', /* 表格淺底色 */
-                        primaryLighter: '#6B5E72', /* 表格深底色 */
-                        secondary: '#D69E2E', /* 金黃色 - 代表尊榮與安"星" */
-                        line: '#00B900',      /* LINE 品牌綠 */
+                        primary: '#48344F',
+                        primaryDark: '#3C2A42',
+                        primaryLight: '#5A4B62',
+                        primaryLighter: '#6B5E72',
+                        secondary: '#D69E2E',
+                        line: '#00B900',
                     },
                     fontFamily: {
                         sans: ['"Noto Sans TC"', 'sans-serif'],
@@ -31,48 +31,529 @@
         }
     </script>
     <style>
-        /* 隱藏捲軸但保持可滾動的微調 */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
         .hero-bg {
-            /* 橫幅背景疊加顏色也更新為深紫紅色系 */
             background-image: linear-gradient(rgba(72, 52, 79, 0.75), rgba(72, 52, 79, 0.85)), url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1920');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
-        /* 價目表手機版全螢幕自動縮放 (免捲動) */
         @media (max-width: 768px) {
-            .responsive-pricing-table {
-                min-width: 100% !important;
-                font-size: 2.6vw !important; /* 根據螢幕寬度自動縮放整體字體 */
+            .responsive-pricing-table { min-width: 100% !important; font-size: 2.6vw !important; }
+            .responsive-pricing-table th, .responsive-pricing-table td { padding: 1vw 0.5vw !important; line-height: 1.2 !important; }
+            .responsive-pricing-table th.whitespace-nowrap, .responsive-pricing-table td.whitespace-nowrap { white-space: normal !important; word-break: keep-all; }
+            .responsive-pricing-table .text-xl, .responsive-pricing-table .text-2xl, .responsive-pricing-table .text-lg { font-size: 3vw !important; }
+            .responsive-pricing-table .text-xs, .responsive-pricing-table .text-sm { font-size: 2.2vw !important; }
+            .responsive-pricing-table .pl-4 { padding-left: 1.5vw !important; }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased bg-gray-50">
+
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-white/95 backdrop-blur-sm shadow-md" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <span class="text-3xl font-black text-primary tracking-wider">安星<span class="text-secondary">租車</span></span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#about" class="text-gray-600 hover:text-secondary font-medium transition-colors">關於我們</a>
+                    <a href="#services" class="text-gray-600 hover:text-secondary font-medium transition-colors">服務項目</a>
+                    <a href="#features" class="text-gray-600 hover:text-secondary font-medium transition-colors">車款特色</a>
+                    <a href="#pricing" class="text-gray-600 hover:text-secondary font-medium transition-colors">價目表</a>
+                    <a href="#notice" class="text-gray-600 hover:text-secondary font-medium transition-colors">乘車須知</a>
+                    <a href="https://line.me/R/ti/p/@220ewdah" target="_blank" class="bg-line hover:bg-green-600 text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                        <i class="fab fa-line text-xl"></i> 立即預約
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#about" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-secondary hover:bg-gray-50 rounded-md mobile-link">關於我們</a>
+                <a href="#services" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-secondary hover:bg-gray-50 rounded-md mobile-link">服務項目</a>
+                <a href="#features" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-secondary hover:bg-gray-50 rounded-md mobile-link">車款特色</a>
+                <a href="#pricing" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-secondary hover:bg-gray-50 rounded-md mobile-link">價目表</a>
+                <a href="#notice" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-secondary hover:bg-gray-50 rounded-md mobile-link">乘車須知</a>
+                <a href="https://line.me/R/ti/p/@220ewdah" target="_blank" class="block px-3 py-3 mt-4 text-center text-base font-bold text-white bg-line rounded-md">
+                    <i class="fab fa-line mr-2"></i> LINE 預約 (@220ewdah)
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-bg min-h-screen flex items-center justify-center pt-20">
+        <div class="text-center px-4 max-w-4xl mx-auto">
+            <span class="inline-block py-1 px-3 rounded-full bg-secondary/20 text-secondary font-semibold border border-secondary/50 mb-6 backdrop-blur-sm">
+                合法立案・千萬乘客險
+            </span>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight tracking-wide shadow-black drop-shadow-lg">
+                尊榮隨行，<span class="text-secondary">安全抵達</span>
+            </h1>
+            <p class="text-lg md:text-2xl text-gray-200 mb-10 font-light drop-shadow-md">
+                為您提供最專業的 機場接送 ｜ 包車旅遊 ｜ 商務用車
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://line.me/R/ti/p/@220ewdah" target="_blank" class="bg-line hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
+                    <i class="fab fa-line text-2xl"></i> LINE 快速預約
+                </a>
+                <a href="#services" class="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/30 text-white px-8 py-4 rounded-full text-lg font-medium transition-all">
+                    了解服務
+                </a>
+            </div>
+            <p class="mt-6 text-gray-300 font-medium tracking-widest">
+                LINE ID: <span class="text-white font-bold">@220ewdah</span>
+            </p>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">關於安星租車</h2>
+                <div class="w-24 h-1.5 bg-secondary mx-auto rounded-full"></div>
+            </div>
+            <div class="max-w-3xl mx-auto text-center space-y-6 text-lg text-gray-600 leading-relaxed">
+                <p>本公司為登記立案之合法小客車租賃公司，擁有<strong class="text-primary font-bold">超過 10 年以上</strong>的專業派車與服務經驗，長期與各大企業、科技園區簽約配合。</p>
+                <p>我們深知，一趟旅程的價值不在於價格的競爭，而在於<strong class="text-primary font-bold">「安全、準時、舒適」</strong>的承諾。我們堅持提供合法租賃車輛、專業優良司機以及完善的乘客保險，為您的每一次出行嚴格把關。</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 text-center">
+                <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                    <i class="fas fa-shield-alt text-4xl text-secondary mb-4"></i>
+                    <h4 class="font-bold text-xl text-primary">合法立案</h4>
+                </div>
+                <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                    <i class="fas fa-user-tie text-4xl text-secondary mb-4"></i>
+                    <h4 class="font-bold text-xl text-primary">專業司機</h4>
+                </div>
+                <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                    <i class="fas fa-car text-4xl text-secondary mb-4"></i>
+                    <h4 class="font-bold text-xl text-primary">定期保養</h4>
+                </div>
+                <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+                    <i class="fas fa-file-contract text-4xl text-secondary mb-4"></i>
+                    <h4 class="font-bold text-xl text-primary">乘客保險</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">專業服務項目</h2>
+                <div class="w-24 h-1.5 bg-secondary mx-auto rounded-full"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800" alt="機場接送" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8 text-center">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto -mt-16 mb-4 relative z-10 border-4 border-white">
+                            <i class="fas fa-plane-departure text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary mb-3">機場接送</h3>
+                        <p class="text-gray-600 mb-6">桃園機場、松山機場、小港機場等專車接送。班機追蹤不漏接，讓您出國返鄉輕鬆無憂。</p>
+                        <a href="https://line.me/R/ti/p/@220ewdah" target="_blank" class="inline-block text-secondary font-bold hover:text-primary transition-colors border-b-2 border-secondary pb-1">預約接送 <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80&w=800" alt="包車旅遊" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8 text-center">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto -mt-16 mb-4 relative z-10 border-4 border-white">
+                            <i class="fas fa-map-marked-alt text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary mb-3">包車旅遊</h3>
+                        <p class="text-gray-600 mb-6">全台景點客製化行程安排。專業司機兼導遊，帶您深度探索台灣之美，免去交通轉乘煩惱。</p>
+                        <a href="https://line.me/R/ti/p/@220ewdah" target="_blank" class="inline-block text-secondary font-bold hover:text-primary transition-colors border-b-2 border-secondary pb-1">洽詢行程 <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1549317336-206569e8475c?auto=format&fit=crop&q=80&w=800" alt="商務用車" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8 text-center">
+                        <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto -mt-16 mb-4 relative z-10 border-4 border-white">
+                            <i class="fas fa-user-tie text-2xl text-primary"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-primary mb-3">商務用車</h3>
+                        <p class="text-gray-600 mb-6">企業貴賓接待、高鐵接駁、婚喪喜慶等各式用車需求。提供高質感尊榮車款，展現專業形象。</p>
+                        <a href="https://line.me/R/ti/p/@220ewdah" target="_blank" class="inline-block text-secondary font-bold hover:text-primary transition-colors border-b-2 border-secondary pb-1">專人服務 <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">嚴選車款</h2>
+                <div class="w-24 h-1.5 bg-secondary mx-auto rounded-full mb-6"></div>
+                <p class="text-gray-600">所有車輛皆定期保養、清潔消毒，為您提供最安心的乘坐空間</p>
+            </div>
+            <div class="space-y-12">
+                <div class="flex flex-col md:flex-row items-center bg-gray-50 rounded-3xl overflow-hidden border border-gray-100">
+                    <div class="w-full md:w-1/2 aspect-video shrink-0">
+                        <img src="camry.jpg" alt="TOYOTA CAMRY" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 p-8 md:p-12">
+                        <div class="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm mb-4">1~3人 座位</div>
+                        <h3 class="text-3xl font-bold text-primary mb-4">舒適小車 <span class="block text-2xl mt-1">(Camry等同級距)</span></h3>
+                        <ul class="space-y-3 text-gray-600 mb-6">
+                            <li><i class="fas fa-check-circle text-secondary mr-2"></i> 適合商務客、小家庭出行</li>
+                            <li><i class="fas fa-suitcase text-secondary mr-2"></i> 行李建議：28-29吋行李箱 x2</li>
+                            <li><i class="fas fa-couch text-secondary mr-2"></i> 寬敞後座空間、舒適皮椅</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row-reverse items-center bg-gray-50 rounded-3xl overflow-hidden border border-gray-100">
+                    <div class="w-full md:w-1/2 aspect-video shrink-0">
+                        <img src="form_banner.jpg" alt="福斯T6.1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 p-8 md:p-12">
+                        <div class="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm mb-4">4~7人 座位</div>
+                        <h3 class="text-3xl font-bold text-primary mb-4">舒適大車 <span class="block text-2xl mt-1">(七至九人座)</span></h3>
+                        <ul class="space-y-3 text-gray-600 mb-6">
+                            <li><i class="fas fa-check-circle text-secondary mr-2"></i> 適合三五好友、家族旅遊</li>
+                            <li><i class="fas fa-suitcase text-secondary mr-2"></i> 行李建議：28-29吋行李箱 x5-7</li>
+                            <li><i class="fas fa-couch text-secondary mr-2"></i> 挑高車室空間，長途旅行不疲勞</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row items-center bg-gray-50 rounded-3xl overflow-hidden border border-gray-100">
+                    <div class="w-full md:w-1/2 aspect-video shrink-0">
+                        <img src="SIENNA.jpg" alt="TOYOTA SIENNA & BENZ V" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 p-8 md:p-12">
+                        <div class="inline-block px-4 py-1 rounded-full bg-secondary/20 text-secondary font-bold text-sm mb-4">頂級 VIP 接待</div>
+                        <h3 class="text-3xl font-bold text-primary mb-4">尊榮車款 <span class="block text-2xl mt-1">(Sienna / Benz V-Class)</span></h3>
+                        <ul class="space-y-3 text-gray-600 mb-6">
+                            <li><i class="fas fa-check-circle text-secondary mr-2"></i> 適合外賓接待、高階主管用車</li>
+                            <li><i class="fas fa-suitcase text-secondary mr-2"></i> 行李建議：依車型配置而定</li>
+                            <li><i class="fas fa-couch text-secondary mr-2"></i> 獨立座椅提供更寬敞的個人空間</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="py-20 bg-gray-100">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">機場接送 價目表</h2>
+                <div class="w-24 h-1.5 bg-secondary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="bg-primary rounded-3xl p-4 md:p-8 shadow-2xl text-white">
+                <div class="overflow-hidden w-full pb-4">
+                    <table class="w-full text-sm md:text-base text-center border-collapse border border-white/20 responsive-pricing-table">
+                        <thead>
+                            <tr class="bg-primaryDark">
+                                <th rowspan="3" colspan="2" class="border border-white/20 p-4 text-xl md:text-2xl font-bold whitespace-nowrap">桃園機場價格表</th>
+                                <th colspan="2" class="border border-white/20 p-2 text-lg">舒適小車</th>
+                                <th colspan="2" class="border border-white/20 p-2 text-lg">舒適大車</th>
+                                <th colspan="2" class="border border-white/20 p-2 text-lg">尊榮車款</th>
+                            </tr>
+                            <tr class="bg-primaryDark text-blue-100">
+                                <th colspan="2" class="border border-white/20 p-2 text-xs md:text-sm font-normal">1~3人行李29吋*2<br>Camry或2.0以上車款</th>
+                                <th colspan="2" class="border border-white/20 p-2 text-xs md:text-sm font-normal">1~7人行李29吋*7<br>7-9人座不指定車款</th>
+                                <th colspan="2" class="border border-white/20 p-2 text-xs md:text-sm font-normal">1~7人行李29吋*7<br>Sienna油電或Benz 9人座</th>
+                            </tr>
+                            <tr class="bg-primaryDark font-bold tracking-wider">
+                                <th class="border border-white/20 p-2">送機</th>
+                                <th class="border border-white/20 p-2">接機</th>
+                                <th class="border border-white/20 p-2">送機</th>
+                                <th class="border border-white/20 p-2">接機</th>
+                                <th class="border border-white/20 p-2">送機</th>
+                                <th class="border border-white/20 p-2">接機</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-primaryLighter">
+                                <td rowspan="2" class="border border-white/20 p-2 font-bold whitespace-nowrap text-lg">基隆</td>
+                                <td class="border border-white/20 p-2 text-left pl-4">信義、中正</td>
+                                <td class="border border-white/20 p-2">1,400</td><td class="border border-white/20 p-2">1,600</td>
+                                <td class="border border-white/20 p-2">1,800</td><td class="border border-white/20 p-2">2,000</td>
+                                <td class="border border-white/20 p-2">2,200</td><td class="border border-white/20 p-2">2,400</td>
+                            </tr>
+                            <tr class="bg-primaryLight">
+                                <td class="border border-white/20 p-2 text-left pl-4">中山、安樂、仁愛</td>
+                                <td class="border border-white/20 p-2">1,300</td><td class="border border-white/20 p-2">1,500</td>
+                                <td class="border border-white/20 p-2">1,700</td><td class="border border-white/20 p-2">1,900</td>
+                                <td class="border border-white/20 p-2">2,100</td><td class="border border-white/20 p-2">2,300</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td rowspan="7" class="border border-white/20 p-2 font-bold whitespace-nowrap text-lg">雙北</td>
+                                <td class="border border-white/20 p-2 text-left pl-4">台北市內、新北市內</td>
+                                <td class="border border-white/20 p-2">1,200</td><td class="border border-white/20 p-2">1,400</td>
+                                <td class="border border-white/20 p-2">1,600</td><td class="border border-white/20 p-2">1,800</td>
+                                <td class="border border-white/20 p-2">2,000</td><td class="border border-white/20 p-2">2,200</td>
+                            </tr>
+                            <tr class="bg-primaryLight">
+                                <td class="border border-white/20 p-2 text-left pl-4">汐止、深坑</td>
+                                <td class="border border-white/20 p-2">1,300</td><td class="border border-white/20 p-2">1,500</td>
+                                <td class="border border-white/20 p-2">1,700</td><td class="border border-white/20 p-2">1,900</td>
+                                <td class="border border-white/20 p-2">2,100</td><td class="border border-white/20 p-2">2,300</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td class="border border-white/20 p-2 text-left pl-4">文山 (指南路一段)</td>
+                                <td class="border border-white/20 p-2">1,300</td><td class="border border-white/20 p-2">1,500</td>
+                                <td class="border border-white/20 p-2">1,700</td><td class="border border-white/20 p-2">1,900</td>
+                                <td class="border border-white/20 p-2">2,100</td><td class="border border-white/20 p-2">2,300</td>
+                            </tr>
+                            <tr class="bg-primaryLight">
+                                <td class="border border-white/20 p-2 text-left pl-4">陽明山山區、新店山區</td>
+                                <td class="border border-white/20 p-2">1,600</td><td class="border border-white/20 p-2">1,800</td>
+                                <td class="border border-white/20 p-2">2,000</td><td class="border border-white/20 p-2">2,200</td>
+                                <td class="border border-white/20 p-2">2,400</td><td class="border border-white/20 p-2">2,600</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td class="border border-white/20 p-2 text-left pl-4">汐止、淡水</td>
+                                <td class="border border-white/20 p-2">1,300</td><td class="border border-white/20 p-2">1,500</td>
+                                <td class="border border-white/20 p-2">1,700</td><td class="border border-white/20 p-2">1,900</td>
+                                <td class="border border-white/20 p-2">2,100</td><td class="border border-white/20 p-2">2,300</td>
+                            </tr>
+                            <tr class="bg-primaryLight">
+                                <td class="border border-white/20 p-2 text-left pl-4">三芝、淡水</td>
+                                <td class="border border-white/20 p-2">1,400</td><td class="border border-white/20 p-2">1,600</td>
+                                <td class="border border-white/20 p-2">1,800</td><td class="border border-white/20 p-2">2,000</td>
+                                <td class="border border-white/20 p-2">2,200</td><td class="border border-white/20 p-2">2,400</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td class="border border-white/20 p-2 text-left pl-4">金山、萬里</td>
+                                <td class="border border-white/20 p-2">1,600</td><td class="border border-white/20 p-2">1,800</td>
+                                <td class="border border-white/20 p-2">2,000</td><td class="border border-white/20 p-2">2,200</td>
+                                <td class="border border-white/20 p-2">2,400</td><td class="border border-white/20 p-2">2,600</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td rowspan="3" class="border border-white/20 p-2 font-bold whitespace-nowrap text-lg">桃園</td>
+                                <td class="border border-white/20 p-2 text-left pl-4">桃園市內</td>
+                                <td class="border border-white/20 p-2">1,000</td><td class="border border-white/20 p-2">1,200</td>
+                                <td class="border border-white/20 p-2">1,400</td><td class="border border-white/20 p-2">1,600</td>
+                                <td class="border border-white/20 p-2">1,800</td><td class="border border-white/20 p-2">2,000</td>
+                            </tr>
+                            <tr class="bg-primaryLight">
+                                <td class="border border-white/20 p-2 text-left pl-4">新屋、楊梅、大溪市區</td>
+                                <td class="border border-white/20 p-2">1,200</td><td class="border border-white/20 p-2">1,400</td>
+                                <td class="border border-white/20 p-2">1,600</td><td class="border border-white/20 p-2">1,800</td>
+                                <td class="border border-white/20 p-2">2,000</td><td class="border border-white/20 p-2">2,200</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td class="border border-white/20 p-2 text-left pl-4">龍潭</td>
+                                <td class="border border-white/20 p-2">1,200</td><td class="border border-white/20 p-2">1,400</td>
+                                <td class="border border-white/20 p-2">1,600</td><td class="border border-white/20 p-2">1,800</td>
+                                <td class="border border-white/20 p-2">2,000</td><td class="border border-white/20 p-2">2,200</td>
+                            </tr>
+                            <tr class="bg-primaryLight">
+                                <td rowspan="3" class="border border-white/20 p-2 font-bold whitespace-nowrap text-lg">新竹</td>
+                                <td class="border border-white/20 p-2 text-left pl-4">新竹/竹北市區、湖口</td>
+                                <td class="border border-white/20 p-2">1,200</td><td class="border border-white/20 p-2">1,400</td>
+                                <td class="border border-white/20 p-2">1,600</td><td class="border border-white/20 p-2">1,800</td>
+                                <td class="border border-white/20 p-2">2,000</td><td class="border border-white/20 p-2">2,200</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td class="border border-white/20 p-2 text-left pl-4">竹東、芎林</td>
+                                <td class="border border-white/20 p-2">1,400</td><td class="border border-white/20 p-2">1,600</td>
+                                <td class="border border-white/20 p-2">1,800</td><td class="border border-white/20 p-2">2,000</td>
+                                <td class="border border-white/20 p-2">2,200</td><td class="border border-white/20 p-2">2,400</td>
+                            </tr>
+                            <tr class="bg-primaryLight">
+                                <td class="border border-white/20 p-2 text-left pl-4">新豐、香山、寶山</td>
+                                <td class="border border-white/20 p-2">1,400</td><td class="border border-white/20 p-2">1,600</td>
+                                <td class="border border-white/20 p-2">1,800</td><td class="border border-white/20 p-2">2,000</td>
+                                <td class="border border-white/20 p-2">2,200</td><td class="border border-white/20 p-2">2,400</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td rowspan="2" class="border border-white/20 p-2 font-bold whitespace-nowrap text-lg">苗栗</td>
+                                <td class="border border-white/20 p-2 text-left pl-4">頭份、竹南</td>
+                                <td class="border border-white/20 p-2">1,600</td><td class="border border-white/20 p-2">1,800</td>
+                                <td class="border border-white/20 p-2">2,000</td><td class="border border-white/20 p-2">2,200</td>
+                                <td class="border border-white/20 p-2">2,400</td><td class="border border-white/20 p-2">2,600</td>
+                            </tr>
+                            <tr class="bg-primaryLight">
+                                <td class="border border-white/20 p-2 text-left pl-4">苗栗市、造橋、後龍</td>
+                                <td class="border border-white/20 p-2">2,200</td><td class="border border-white/20 p-2">2,400</td>
+                                <td class="border border-white/20 p-2">2,600</td><td class="border border-white/20 p-2">2,800</td>
+                                <td class="border border-white/20 p-2">3,000</td><td class="border border-white/20 p-2">3,200</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td rowspan="3" class="border border-white/20 p-2 font-bold whitespace-nowrap text-lg">台中</td>
+                                <td class="border border-white/20 p-2 text-left pl-4">台中市區</td>
+                                <td class="border border-white/20 p-2">-</td><td class="border border-white/20 p-2">-</td>
+                                <td class="border border-white/20 p-2">3,200</td><td class="border border-white/20 p-2">3,400</td>
+                                <td class="border border-white/20 p-2">3,600</td><td class="border border-white/20 p-2">3,800</td>
+                            </tr>
+                            <tr class="bg-primaryLight">
+                                <td class="border border-white/20 p-2 text-left pl-4">太平、大甲</td>
+                                <td class="border border-white/20 p-2">-</td><td class="border border-white/20 p-2">-</td>
+                                <td class="border border-white/20 p-2">3,600</td><td class="border border-white/20 p-2">3,800</td>
+                                <td class="border border-white/20 p-2">3,800</td><td class="border border-white/20 p-2">4,000</td>
+                            </tr>
+                            <tr class="bg-primaryLighter">
+                                <td class="border border-white/20 p-2 text-left pl-4">烏日、霧峰、梧棲</td>
+                                <td class="border border-white/20 p-2">-</td><td class="border border-white/20 p-2">-</td>
+                                <td class="border border-white/20 p-2">3,600</td><td class="border border-white/20 p-2">3,800</td>
+                                <td class="border border-white/20 p-2">3,800</td><td class="border border-white/20 p-2">4,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 text-sm text-blue-100 leading-relaxed max-w-5xl mx-auto space-y-6">
+                    <p class="text-center text-xs md:text-sm border-b border-white/10 pb-4">
+                        以上報價均為單點出發參考之價格，實際價格需以訂單資料為主本公司確認後回覆報價。<br class="hidden md:block">
+                        報價皆為現金未稅價，如需開立統一發票需+5%稅金
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-8 pt-2">
+                        <div>
+                            <h4 class="font-bold text-white mb-3 text-base"><i class="fas fa-plus-circle text-secondary mr-2"></i>【加價項目】</h4>
+                            <ul class="space-y-2 text-xs md:text-sm opacity-90">
+                                <li>• 夜間時段 23:00-04:59 : <span class="text-secondary font-bold">+$100</span></li>
+                                <li>• 指定車款 : <span class="text-secondary font-bold">+$500</span></li>
+                                <li>• 安全座椅 : <span class="text-secondary font-bold">+$200/張</span> (可指定前向/後向)</li>
+                                <li>• 增高墊 : <span class="text-secondary font-bold">+$100/張</span></li>
+                                <li>• 專人舉牌 : <span class="text-secondary font-bold">+$200</span> (含專屬迎賓舉牌)</li>
+                                <li>• 多點上下車 : 同區 <span class="text-secondary font-bold">+$100起</span> / 跨區另計</li>
+                                <li>• 偏遠山區加價 : 依實際地址經客服評估後報價</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white mb-3 text-base"><i class="fas fa-clock text-secondary mr-2"></i>【等候規範】</h4>
+                            <ul class="space-y-2 text-xs md:text-sm opacity-90">
+                                <li>• <strong>送機等候：</strong> 司機抵達指定地點後，免費等候 15 分鐘。</li>
+                                <li>• <strong>接機等候：</strong> 班機抵達後，免費等候 75 分鐘。</li>
+                                <li>• <strong>超時費用：</strong> 超過免費等候時間，酌收超時費 <span class="text-secondary font-bold">$200/半小時(以此類推)</span>。</li>
+                                <li>• <strong>班機延誤：</strong> 如班機提早或延誤，司機將依航班實際抵達時間進行追蹤調度，不額外收費。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="notice" class="py-20 bg-white border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">預約與乘車須知</h2>
+                <div class="w-24 h-1.5 bg-secondary mx-auto rounded-full"></div>
+            </div>
+            <div class="space-y-6">
+                <div class="bg-gray-50 rounded-2xl p-6 border-l-4 border-primary">
+                    <h3 class="text-xl font-bold text-primary mb-3 flex items-center">
+                        <i class="fas fa-calendar-alt w-8 text-secondary"></i> 預約與確認
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed ml-8">請提早透過 LINE 客服進行預約。確認行程及報價後，客服將會發送「訂單確認信」，司機資訊將於乘車前一日晚間 20:00 前以 LINE 發送給您。</p>
+                </div>
+                <div class="bg-gray-50 rounded-2xl p-6 border-l-4 border-primary">
+                    <h3 class="text-xl font-bold text-primary mb-3 flex items-center">
+                        <i class="fas fa-undo-alt w-8 text-secondary"></i> 取消與變更政策
+                    </h3>
+                    <ul class="text-gray-600 leading-relaxed ml-8 list-disc pl-4 space-y-1">
+                        <li>乘車日 24 小時前取消：免收違約金。</li>
+                        <li>乘車日 12-24 小時內取消：收取車資 50% 作為調度補償。</li>
+                        <li>乘車日 12 小時內取消或司機已出發：收取全額車資。</li>
+                        <li>如遇颱風、地震等不可抗力因素導致班機取消，請盡速通知客服，可免費取消或延期。</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 rounded-2xl p-6 border-l-4 border-primary">
+                    <h3 class="text-xl font-bold text-primary mb-3 flex items-center">
+                        <i class="fas fa-suitcase-rolling w-8 text-secondary"></i> 行李規範
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed ml-8">為維護行車安全與乘坐舒適度，若您的行李尺寸特殊（如：高爾夫球具、滑雪板、大型樂器）或數量較多，請務必於預約時主動告知客服，以便為您安排適合的車款。若因未告知導致現場無法裝載，司機有權拒載並收取空趟費。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-primaryDark text-gray-300 py-12 border-t-4 border-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black text-white tracking-wider">安星<span class="text-secondary">租車</span></h3>
+                    <p class="text-sm opacity-80 leading-relaxed">
+                        合法立案租賃車行，為您提供最優質的機場接送、包車旅遊及商務用車服務。<br>尊榮隨行，安全抵達。
+                    </p>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-white mb-4">聯絡我們</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start">
+                            <i class="fab fa-line text-line text-lg w-6 mt-0.5"></i>
+                            <div>
+                                <span class="block">官方 LINE 預約 (24H客服)</span>
+                                <a href="https://line.me/R/ti/p/@220ewdah" target="_blank" class="text-white hover:text-secondary font-bold transition-colors">@220ewdah</a>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-secondary text-lg w-6 mt-0.5"></i>
+                            <div>
+                                <span class="block">電子信箱</span>
+                                <a href="mailto:ansing@ansinglimo.com" class="text-white hover:text-secondary transition-colors">ansing@ansinglimo.com</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-white mb-4">快速導覽</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#about" class="hover:text-secondary transition-colors">關於我們</a></li>
+                        <li><a href="#services" class="hover:text-secondary transition-colors">服務項目</a></li>
+                        <li><a href="#pricing" class="hover:text-secondary transition-colors">機場接送價目表</a></li>
+                        <li><a href="#notice" class="hover:text-secondary transition-colors">乘車須知政策</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/10 mt-10 pt-6 text-center text-sm opacity-60 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p>&copy; 2024 安星租車版權所有 All Rights Reserved.</p>
+                <p>網站維護與設計</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 10) {
+                navbar.classList.add('shadow-lg');
+                navbar.classList.remove('shadow-md');
+            } else {
+                navbar.classList.add('shadow-md');
+                navbar.classList.remove('shadow-lg');
             }
-            .responsive-pricing-table th, 
-            .responsive-pricing-table td {
-                padding: 1vw 0.5vw !important; /* 縮小內距以適應小螢幕 */
-                line-height: 1.2 !important;
-            }
-            .responsive-pricing-table th.whitespace-nowrap,
-            .responsive-pricing-table td.whitespace-nowrap {
-                white-space: normal !important;
-                word-break: keep-all;
-            }
-            /* 標題與重點文字的比例微調 */
-            .responsive-pricing-table .text-xl,
-            .responsive-pricing-table .text-2xl,
-            .responsive-pricing-table .text-lg {
-                font-size: 3vw !important;
-            }
+        });
+    </script>
+</body>
+</html>
